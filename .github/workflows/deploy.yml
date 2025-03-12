@@ -5,7 +5,10 @@ on:
       branches: [main]
       tags:
         - 'v*'
-  
+
+permissions:
+  contents: write
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
