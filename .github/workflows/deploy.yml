@@ -15,12 +15,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}  # Ensure we have the entire repo plus this tag
+
+      - name: Fetch all tags # (optional if fetch-depth: 0 doesn't fetch tags)
+        run: git fetch --tags
 
       - name: Capture Commit Metadata
         run: |
           echo "Commit: ${{ github.sha }}" > commit_info.txt
-          # Optionally capture the previous tag to form a commit range if available
-          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "none")
           echo "Previous Tag: $PREV_TAG" >> commit_info.txt
 
       - name: Build Artifact
