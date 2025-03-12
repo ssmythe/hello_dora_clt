@@ -34,7 +34,7 @@ jobs:
           PATCH=$((PATCH + 1))
           NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
           echo "New tag: $NEW_TAG"
-          echo "::set-output name=new_tag::$NEW_TAG"
+          echo "new_tag=${NEW_TAG}" >> $GITHUB_OUTPUT
 
       - name: Create and push new tag
         run: |
