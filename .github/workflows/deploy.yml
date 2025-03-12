@@ -1,0 +1,34 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  push:
+    tags:
+      - 'v*'  # Triggers on version tags, e.g., v1.0.0
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Capture Commit Metadata
+        run: |
+          echo "Commit: ${{ github.sha }}" > commit_info.txt
+          # Optionally capture the previous tag to form a commit range if available
+          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+          echo "Previous Tag: $PREV_TAG" >> commit_info.txt
+
+      - name: Build Artifact
+        run: |
+          mkdir build
+          cp index.html build/
+          cp commit_info.txt build/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build
