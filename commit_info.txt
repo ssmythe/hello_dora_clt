@@ -1,2 +1,2 @@
 Commit: 85fadfdab22b9dd52a1e48ca25bcb572927a6742
-Previous Tag: none
+Previous Tag: v1.0.0
